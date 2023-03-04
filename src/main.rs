@@ -1,22 +1,22 @@
-use std::io::*;
+use std::io::stdin;
 use std::process::exit;
-use std::sync::mpsc::*;
+use std::sync::mpsc::{Receiver, channel};
 use std::sync::Arc;
 use std::sync::Mutex;
 use std::time::Duration;
 
-const VER: &str = "0.0.1";
+const VER: &str = env!("CARGO_PKG_VERSION");
 
 fn main() {
+    println!("Welcome to lycopersicum! {VER}");
     let (tx, rx) = channel();
     let args = vec![15, 5, 0];
     let bingo = Mutex::new(Duration::from_secs(0));
     let bingo = Arc::new(bingo);
     let rx = Arc::new(Mutex::new(rx));
-    let bingo_clone = bingo.clone();
-    let haha = std::thread::spawn(move || loop {
-        for i in args.iter() {
-            count_to(bingo_clone.clone(), *i, rx.clone());
+    std::thread::spawn(move || loop {
+        for i in &args {
+            count_to(bingo.clone(), *i, rx.clone());
         }
     });
     loop {
@@ -36,13 +36,10 @@ fn main() {
 fn count_to(penis: Arc<Mutex<Duration>>, end: u64, rx: Arc<Mutex<Receiver<&str>>>) {
     let mut iter = 1;
     let mut penis2 = penis.lock().unwrap();
-    println!("{}", end);
+    println!("{end}");
     let rx = rx.try_lock().unwrap();
     while penis2.as_secs() < end {
-        let state = match rx.try_recv() {
-            Ok(bingle) => bingle,
-            Err(_) => "",
-        };
+        let state = rx.try_recv().unwrap_or(""); 
         match state {
             "start" => {
                 iter = 1;

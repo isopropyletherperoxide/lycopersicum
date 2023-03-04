@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "tomato"
+name = "lycopersicum"
 version = "0.1.0"
