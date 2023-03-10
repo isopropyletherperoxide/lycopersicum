@@ -8,6 +8,7 @@ repository = "https://github.com/isopropyletherperoxide/lycopersicum"
 description = "A simple Pomodoro Timer"
 categories = ["date-and-time"]
 keywords = ["productivity", "pomodoro"]
+authors = ["Aryl Halide"]
 
 [dependencies]
 clap = { version = "4.1.8", features = ["derive"] }
