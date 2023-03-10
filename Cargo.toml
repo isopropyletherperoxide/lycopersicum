@@ -2,6 +2,12 @@
 name = "lycopersicum"
 version = "0.1.0"
 edition = "2021"
+license = "GPL-3.0"
+readme = "README.md"
+repository = "https://github.com/isopropyletherperoxide/lycopersicum"
+description = "A simple Pomodoro Timer"
+categories = ["date-and-time"]
+keywords = ["productivity", "pomodoro"]
 
 [dependencies]
 clap = { version = "4.1.8", features = ["derive"] }
