@@ -19,7 +19,10 @@ pub fn count_to(clock_pt: Arc<Mutex<Duration>>, end_minutes: u64, rx: Arc<Mutex<
     let mut iter = 1;
     let mut unlocked_clock = clock_pt.lock().unwrap();
     let end_seconds = end_minutes * 60;
-    println!("starting a timer for {end_minutes} minutes");
+    match end_minutes {
+        1 => println!("starting a timer for {end_minutes} minute"),
+        _ => println!("starting a timer for {end_minutes} minutes"),
+    }
     let rx = rx.try_lock().unwrap();
     while unlocked_clock.as_secs() < end_seconds {
         let state = rx.try_recv().unwrap_or("");
