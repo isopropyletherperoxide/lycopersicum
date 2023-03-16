@@ -17,13 +17,13 @@ use std::sync::mpsc::Receiver;
 
 pub fn count_to(clock_pt: Arc<Mutex<Duration>>, end_minutes: u64, rx: Arc<Mutex<Receiver<&str>>>) {
     let mut iter = 1;
-    let mut unlocked_clock = clock_pt.lock().unwrap();
+    let mut unlocked_clock = clock_pt.lock().expect("Error accessing mutex!");
     let end_seconds = end_minutes * 60;
     match end_minutes {
         1 => println!("starting a timer for {end_minutes} minute"),
         _ => println!("starting a timer for {end_minutes} minutes"),
     }
-    let rx = rx.try_lock().unwrap();
+    let rx = rx.try_lock().expect("Error accessing receiver!");
     while unlocked_clock.as_secs() < end_seconds {
         let state = rx.try_recv().unwrap_or("");
         match state {

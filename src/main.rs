@@ -1,5 +1,7 @@
 use clap::Parser;
 use lycopersicum::lib::count_to;
+use notify_rust::Notification;
+use notify_rust::Timeout;
 use std::io::stdin;
 use std::process::exit;
 use std::sync::mpsc::channel;
@@ -30,15 +32,21 @@ fn main() {
     std::thread::spawn(move || loop {
         for i in &timers {
             count_to(clock.clone(), *i, rx.clone());
+            Notification::new()
+                .summary("Lycopersicum:")
+                .body(format!("Timer for {i} minute(s) elapsed").as_str())
+                .timeout(Timeout::Milliseconds(6000))
+                .show()
+                .expect("Error while creating notification!");
         }
     });
     loop {
         let mut input = String::new();
-        stdin().read_line(&mut input).unwrap();
+        stdin().read_line(&mut input).expect("Error reading input!");
         match input.trim() {
-            "start" => tx.send("start").unwrap(),
-            "show" => tx.send("show").unwrap(),
-            "pause" => tx.send("pause").unwrap(),
+            "start" => tx.send("start").expect("Error sending signal!"),
+            "show" => tx.send("show").expect("Error sending signal!"),
+            "pause" => tx.send("pause").expect("Error sending signal!"),
             "quit" => {
                 exit(0);
             }
