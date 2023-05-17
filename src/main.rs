@@ -18,7 +18,6 @@ struct Args {
 const VER: &str = env!("CARGO_PKG_VERSION");
 
 fn main() {
-    // TODO: User IO
     println!("Welcome to lycopersicum! {VER}");
     let args = Args::parse();
     let (tx, rx) = channel();
