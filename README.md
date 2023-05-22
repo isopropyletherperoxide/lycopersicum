@@ -2,7 +2,7 @@
 Pomodoro Clock written in Rust
 
 ```
-Welcome to lycopersicum! 0.3.0
+Welcome to lycopersicum! 0.3.1
 Usage: lycopersicum [OPTIONS]
 
 Options:
