@@ -12,8 +12,11 @@ use std::time::Duration;
 
 #[derive(Parser)]
 struct Args {
+    /// A list of timers (specified in minutes) to loop through
     #[clap(short, long, value_parser, num_args = 1.., value_delimiter = ' ')]
     pub timers: Vec<u64>,
+
+    /// Disable Notifications
     #[clap(short, long)]
     pub no_notifications: bool,
 }
