@@ -1,6 +1,8 @@
 # lycopersicum
 Pomodoro Clock written in Rust
 
+
+### Usage
 ```
 Welcome to lycopersicum! 0.3.1
 Usage: lycopersicum [OPTIONS]
