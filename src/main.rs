@@ -3,6 +3,7 @@ use lycopersicum::lib::count_to;
 use notify_rust::Notification;
 use notify_rust::Timeout;
 use std::io::stdin;
+use std::println;
 use std::process::exit;
 use std::sync::mpsc::channel;
 use std::sync::Arc;
@@ -13,6 +14,8 @@ use std::time::Duration;
 struct Args {
     #[clap(short, long, value_parser, num_args = 1.., value_delimiter = ' ')]
     pub timers: Vec<u64>,
+    #[clap(short, long)]
+    pub no_notifications: bool,
 }
 
 const VER: &str = env!("CARGO_PKG_VERSION");
@@ -30,23 +33,30 @@ fn main() {
     let rx = Arc::new(Mutex::new(rx));
     std::thread::spawn(move || loop {
         for i in &timers {
+            if args.no_notifications == false {
+                Notification::new()
+                    .summary("Pomodoro:")
+                    .body(format!("Timer for {i} minute(s) started").as_str())
+                    .timeout(Timeout::Milliseconds(6000))
+                    .show()
+                    .expect("Error while creating notification!");
+            }
             count_to(clock.clone(), *i, rx.clone());
-            Notification::new()
-                .summary("Lycopersicum:")
-                .body(format!("Timer for {i} minute(s) elapsed").as_str())
-                .timeout(Timeout::Milliseconds(6000))
-                .show()
-                .expect("Error while creating notification!");
         }
     });
     loop {
         let mut input = String::new();
         stdin().read_line(&mut input).expect("Error reading input!");
         match input.trim() {
-            "start" => tx.send("start").expect("Error sending signal!"),
+            "start" => {
+                tx.send("start").expect("Error sending signal!");
+            }
             "show" => tx.send("show").expect("Error sending signal!"),
-            "pause" => tx.send("pause").expect("Error sending signal!"),
+            "pause" => {
+                tx.send("pause").expect("Error sending signal!");
+            }
             "quit" => {
+                println!("Quitting Lycopersicum, Goodbye!");
                 exit(0);
             }
             _ => (),
