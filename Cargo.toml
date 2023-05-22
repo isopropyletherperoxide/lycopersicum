@@ -11,5 +11,5 @@ keywords = ["productivity", "pomodoro"]
 authors = ["Aryl Halide"]
 
 [dependencies]
-clap = { version = "4.1.8", features = ["derive"] }
+clap = { version = "4.3.0", features = ["derive"] }
 notify-rust = "4.8.0"
