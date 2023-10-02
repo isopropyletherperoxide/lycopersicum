@@ -35,16 +35,19 @@ fn main() {
     let clock = Arc::new(Mutex::new(Duration::from_secs(0)));
     let rx = Arc::new(Mutex::new(rx));
     std::thread::spawn(move || loop {
+        let mut n: i32 = 1;
         for i in &timers {
             if args.no_notifications == false {
                 Notification::new()
                     .summary("Pomodoro:")
-                    .body(format!("Timer for {i} minute(s) started").as_str())
+                    .body(format!("Timer {n} for {i} minute(s) started").as_str())
                     .timeout(Timeout::Milliseconds(6000))
                     .show()
                     .expect("Error while creating notification!");
             }
+            println!("Starting timer {n} for {i} minute(s)!");
             count_to(clock.clone(), *i, rx.clone());
+            n = n + 1;
         }
     });
     loop {
